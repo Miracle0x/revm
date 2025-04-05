@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0](https://github.com/Miracle0x/revm/compare/revm-context-interface-v2.0.0...revm-context-interface-v3.0.0) - 2025-04-05
+
+### Other
+
+- remove chain id validation
+- revm for pulse
+
+### Removed
+
+- removed chain id validation
+
 ## [2.0.0](https://github.com/bluealloy/revm/compare/revm-context-interface-v1.0.0...revm-context-interface-v2.0.0) - 2025-03-28
 
 ### Added
