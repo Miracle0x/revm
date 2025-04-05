@@ -427,7 +427,7 @@ impl fmt::Display for InvalidTransaction {
             Self::CreateInitCodeSizeLimit => {
                 write!(f, "create initcode size limit")
             }
-            Self::InvalidChainId => write!(f, "invalid chain ID"),
+            // Self::InvalidChainId => write!(f, "invalid chain ID"),
             Self::AccessListNotSupported => write!(f, "access list not supported"),
             Self::MaxFeePerBlobGasNotSupported => {
                 write!(f, "max fee per blob gas not supported")
