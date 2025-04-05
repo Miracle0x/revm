@@ -117,11 +117,11 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
         TransactionType::Legacy => {
             // Check chain_id only if it is present in the legacy transaction.
             // EIP-155: Simple replay attack protection
-            if let Some(chain_id) = tx.chain_id() {
-                if chain_id != context.cfg().chain_id() && chain_id != 369 {
-                    return Err(InvalidTransaction::InvalidChainId);
-                }
-            }
+            // if let Some(chain_id) = tx.chain_id() {
+            //     if chain_id != context.cfg().chain_id() && chain_id != 369 {
+            //         return Err(InvalidTransaction::InvalidChainId);
+            //     }
+            // }
             // Gas price must be at least the basefee.
             if let Some(base_fee) = base_fee {
                 if tx.gas_price() < base_fee {
@@ -135,9 +135,9 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
                 return Err(InvalidTransaction::Eip2930NotSupported);
             }
 
-            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(369) {
-                return Err(InvalidTransaction::InvalidChainId);
-            }
+            // if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(369) {
+            //     return Err(InvalidTransaction::InvalidChainId);
+            // }
 
             // Gas price must be at least the basefee.
             if let Some(base_fee) = base_fee {
@@ -151,9 +151,9 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
                 return Err(InvalidTransaction::Eip1559NotSupported);
             }
 
-            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(369) {
-                return Err(InvalidTransaction::InvalidChainId);
-            }
+            // if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(369) {
+            //     return Err(InvalidTransaction::InvalidChainId);
+            // }
 
             validate_priority_fee_tx(
                 tx.max_fee_per_gas(),
@@ -166,9 +166,9 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
                 return Err(InvalidTransaction::Eip4844NotSupported);
             }
 
-            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(369) {
-                return Err(InvalidTransaction::InvalidChainId);
-            }
+            // if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(369) {
+            //     return Err(InvalidTransaction::InvalidChainId);
+            // }
 
             validate_priority_fee_tx(
                 tx.max_fee_per_gas(),
@@ -189,9 +189,9 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
                 return Err(InvalidTransaction::Eip7702NotSupported);
             }
 
-            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(369) {
-                return Err(InvalidTransaction::InvalidChainId);
-            }
+            // if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(369) {
+            //     return Err(InvalidTransaction::InvalidChainId);
+            // }
 
             validate_priority_fee_tx(
                 tx.max_fee_per_gas(),
