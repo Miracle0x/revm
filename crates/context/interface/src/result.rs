@@ -332,7 +332,7 @@ pub enum InvalidTransaction {
     /// EIP-3860: Limit and meter initcode
     CreateInitCodeSizeLimit,
     /// Transaction chain id does not match the config chain id.
-    InvalidChainId,
+    // InvalidChainId,
     /// Access list is not supported for blocks before the Berlin hardfork.
     AccessListNotSupported,
     /// `max_fee_per_blob_gas` is not supported for blocks before the Cancun hardfork.
