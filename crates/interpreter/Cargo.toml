@@ -1,0 +1,57 @@
+[package]
+name = "revm-interpreter"
+description = "Revm Interpreter that executes bytecode."
+version = "17.0.0"
+authors.workspace = true
+edition.workspace = true
+keywords.workspace = true
+license.workspace = true
+repository.workspace = true
+readme.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[lints.rust]
+unreachable_pub = "warn"
+unused_must_use = "deny"
+rust_2018_idioms = "deny"
+
+[lints.rustdoc]
+all = "warn"
+
+[dependencies]
+# revm
+bytecode.workspace = true
+primitives.workspace = true
+context-interface.workspace = true
+
+# optional
+serde = { workspace = true, features = ["derive", "rc"], optional = true }
+
+[dev-dependencies]
+database-interface.workspace = true
+walkdir.workspace = true
+bincode.workspace = true
+
+[features]
+default = ["std"]
+std = [
+	"serde?/std",
+	"primitives/std",
+	"context-interface/std",
+	"bytecode/std",
+	"database-interface/std"
+]
+hashbrown = ["primitives/hashbrown"]
+serde = [
+	"dep:serde",
+	"primitives/serde",
+	"bytecode/serde",
+	"context-interface/serde",
+	"database-interface/serde"
+]
+arbitrary = ["std", "primitives/arbitrary"]
+# TODO : Should be set from Context or from crate that consumes this PR.
+memory_limit = []
