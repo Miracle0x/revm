@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1](https://github.com/Miracle0x/revm/compare/revm-handler-v2.0.0...revm-handler-v2.0.1) - 2025-04-07
+
+### Other
+
+- add pulse for revm
+- remove chain id validation
+- revm for pulse
+
 ## [2.0.0](https://github.com/bluealloy/revm/compare/revm-handler-v1.0.0...revm-handler-v2.0.0) - 2025-03-28
 
 ### Added
