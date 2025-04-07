@@ -137,7 +137,7 @@ pub fn apply_eip7702_auth_list<
     for authorization in tx.authorization_list() {
         // 1. Verify the chain id is either 0 or the chain's current ID.
         let auth_chain_id = authorization.chain_id();
-        if !auth_chain_id.is_zero() && auth_chain_id != U256::from(chain_id) && auth_chain_id != U256::from(369) {
+        if !auth_chain_id.is_zero() && auth_chain_id != U256::from(chain_id) && auth_chain_id != U256::from(1) {
             continue;
         }
 
