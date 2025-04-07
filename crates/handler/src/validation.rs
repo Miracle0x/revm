@@ -122,7 +122,7 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
                     return Err(InvalidTransaction::InvalidChainId);
                 }
             }
-            Gas price must be at least the basefee.
+            // Gas price must be at least the basefee.
             if let Some(base_fee) = base_fee {
                 if tx.gas_price() < base_fee {
                     return Err(InvalidTransaction::GasPriceLessThanBasefee);
