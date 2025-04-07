@@ -376,6 +376,7 @@ pub fn calculate_initial_tx_gas(
 
     // Initdate stipend
     let tokens_in_calldata = get_tokens_in_calldata(input, spec_id.is_enabled_in(SpecId::ISTANBUL));
+    println!("is istanbul: {}", spec_id.is_enabled_in(SpecId::ISTANBUL));
     gas.initial_gas += tokens_in_calldata * STANDARD_TOKEN_COST;
 
     // Get number of access list account and storages.
