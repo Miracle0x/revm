@@ -3,6 +3,7 @@ use crate::{
     execution, post_execution, pre_execution, validation, Frame, FrameInitOrResult, FrameOrResult,
     FrameResult, ItemOrResult,
 };
+use context::Block;
 use context::result::FromStringError;
 use context::JournalOutput;
 use context_interface::context::ContextError;
@@ -79,6 +80,7 @@ pub trait Handler {
         evm: &mut Self::Evm,
     ) -> Result<ResultAndState<Self::HaltReason>, Self::Error> {
         // Run inner handler and catch all errors to handle cleanup.
+        println!("Running handler... {:?} chain id {} block number {:?}", evm.ctx().cfg().spec().into(), evm.ctx().cfg().chain_id(), evm.ctx().block().number());
         match self.run_without_catch_error(evm) {
             Ok(output) => Ok(output),
             Err(e) => self.catch_error(evm, e),
@@ -97,8 +99,11 @@ pub trait Handler {
         evm: &mut Self::Evm,
     ) -> Result<ResultAndState<Self::HaltReason>, Self::Error> {
         let init_and_floor_gas = self.validate(evm)?;
+        println!("Initial gas: {} floor gas: {}", init_and_floor_gas.initial_gas, init_and_floor_gas.floor_gas);
         let eip7702_refund = self.pre_execution(evm)? as i64;
+        println!("EIP-7702 refund: {}", eip7702_refund);
         let exec_result = self.execution(evm, &init_and_floor_gas)?;
+        println!("Execution result: {:?}", exec_result);
         self.post_execution(evm, exec_result, init_and_floor_gas, eip7702_refund)
     }
 
