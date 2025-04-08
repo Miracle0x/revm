@@ -113,6 +113,7 @@ where
     {
         let context = &mut self.data.ctx;
         let instructions = &mut self.instruction;
+        println!("Running interpreter... {:?}", instructions.instruction_table());
         interpreter.run_plain(instructions.instruction_table(), context)
     }
     #[inline]
