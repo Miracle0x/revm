@@ -3,7 +3,6 @@ use crate::{
     execution, post_execution, pre_execution, validation, Frame, FrameInitOrResult, FrameOrResult,
     FrameResult, ItemOrResult,
 };
-use context::Block;
 use context::result::FromStringError;
 use context::JournalOutput;
 use context_interface::context::ContextError;
@@ -80,7 +79,6 @@ pub trait Handler {
         evm: &mut Self::Evm,
     ) -> Result<ResultAndState<Self::HaltReason>, Self::Error> {
         // Run inner handler and catch all errors to handle cleanup.
-        println!("Running handler... {:?} chain id {} block number {:?}", evm.ctx().cfg().spec().into(), evm.ctx().cfg().chain_id(), evm.ctx().block().number());
         match self.run_without_catch_error(evm) {
             Ok(output) => Ok(output),
             Err(e) => self.catch_error(evm, e),
@@ -99,11 +97,8 @@ pub trait Handler {
         evm: &mut Self::Evm,
     ) -> Result<ResultAndState<Self::HaltReason>, Self::Error> {
         let init_and_floor_gas = self.validate(evm)?;
-        println!("Initial gas: {} floor gas: {}", init_and_floor_gas.initial_gas, init_and_floor_gas.floor_gas);
         let eip7702_refund = self.pre_execution(evm)? as i64;
-        println!("EIP-7702 refund: {}", eip7702_refund);
         let exec_result = self.execution(evm, &init_and_floor_gas)?;
-        println!("Execution result: {:?}", exec_result);
         self.post_execution(evm, exec_result, init_and_floor_gas, eip7702_refund)
     }
 
@@ -150,23 +145,13 @@ pub trait Handler {
 
         // Create first frame action
         let first_frame_input = self.first_frame_input(evm, gas_limit)?;
-        println!("First frame input: {:?}", first_frame_input);
         let first_frame = self.first_frame_init(evm, first_frame_input)?;
-        // println!("First frame: {:?}", first_frame);
         let mut frame_result = match first_frame {
-            ItemOrResult::Item(frame) => {
-                println!("I am here");
-                self.run_exec_loop(evm, frame)?
-            },
-            ItemOrResult::Result(result) => {
-                println!("I am here 2");
-                result
-            },
+            ItemOrResult::Item(frame) => self.run_exec_loop(evm, frame)?,
+            ItemOrResult::Result(result) => result,
         };
-        println!("Frame result: {:?}", frame_result);
 
         self.last_frame_result(evm, &mut frame_result)?;
-        println!("Last frame result: {:?}", frame_result);
         Ok(frame_result)
     }
 
@@ -363,7 +348,6 @@ pub trait Handler {
         loop {
             let frame = frame_stack.last_mut().unwrap();
             let call_or_result = self.frame_call(frame, evm)?;
-            println!("Frame call result: {:?}", call_or_result);
 
             let result = match call_or_result {
                 ItemOrResult::Item(init) => {
@@ -382,7 +366,6 @@ pub trait Handler {
                     result
                 }
             };
-            println!("Frame result: {:?}", result);
 
             let Some(frame) = frame_stack.last_mut() else {
                 return Ok(result);

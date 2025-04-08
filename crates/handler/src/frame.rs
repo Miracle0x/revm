@@ -557,7 +557,6 @@ where
     ) -> Result<FrameInitOrResult<Self>, ERROR> {
         let context = evm.ctx();
         let spec = context.cfg().spec().into();
-        println!("spec: {:?} with next action {:?}", spec, next_action);
 
         // Run interpreter
 
@@ -566,8 +565,6 @@ where
             InterpreterAction::Return { result } => result,
             InterpreterAction::None => unreachable!("InterpreterAction::None is not expected"),
         };
-
-        println!("interpreter_result: {:?}", interpreter_result);
 
         // Handle return from frame
         let result = match &self.data {
