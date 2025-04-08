@@ -104,8 +104,6 @@ where
     }
 
     fn run(&mut self, context: &mut Self::Evm) -> Result<FrameInitOrResult<Self>, Self::Error> {
-        println!("Frame input: {:?}", self.input);
-        println!("Running frame: {:?}", self.data);
         let next_action = context.run_interpreter(&mut self.interpreter);
         self.process_next_action(context, next_action)
     }
@@ -559,6 +557,7 @@ where
     ) -> Result<FrameInitOrResult<Self>, ERROR> {
         let context = evm.ctx();
         let spec = context.cfg().spec().into();
+        println!("spec: {:?} with next action {:?}", spec, next_action);
 
         // Run interpreter
 
@@ -567,6 +566,8 @@ where
             InterpreterAction::Return { result } => result,
             InterpreterAction::None => unreachable!("InterpreterAction::None is not expected"),
         };
+
+        println!("interpreter_result: {:?}", interpreter_result);
 
         // Handle return from frame
         let result = match &self.data {
