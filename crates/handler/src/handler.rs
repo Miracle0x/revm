@@ -154,8 +154,14 @@ pub trait Handler {
         let first_frame = self.first_frame_init(evm, first_frame_input)?;
         // println!("First frame: {:?}", first_frame);
         let mut frame_result = match first_frame {
-            ItemOrResult::Item(frame) => self.run_exec_loop(evm, frame)?,
-            ItemOrResult::Result(result) => result,
+            ItemOrResult::Item(frame) => {
+                println!("I am here");
+                self.run_exec_loop(evm, frame)?
+            },
+            ItemOrResult::Result(result) => {
+                println!("I am here 2");
+                result
+            },
         };
         println!("Frame result: {:?}", frame_result);
 
