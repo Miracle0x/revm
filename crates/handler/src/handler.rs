@@ -150,13 +150,17 @@ pub trait Handler {
 
         // Create first frame action
         let first_frame_input = self.first_frame_input(evm, gas_limit)?;
+        println!("First frame input: {:?}", first_frame_input);
         let first_frame = self.first_frame_init(evm, first_frame_input)?;
+        // println!("First frame: {:?}", first_frame);
         let mut frame_result = match first_frame {
             ItemOrResult::Item(frame) => self.run_exec_loop(evm, frame)?,
             ItemOrResult::Result(result) => result,
         };
+        println!("Frame result: {:?}", frame_result);
 
         self.last_frame_result(evm, &mut frame_result)?;
+        println!("Last frame result: {:?}", frame_result);
         Ok(frame_result)
     }
 
