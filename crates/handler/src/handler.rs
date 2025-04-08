@@ -363,6 +363,7 @@ pub trait Handler {
         loop {
             let frame = frame_stack.last_mut().unwrap();
             let call_or_result = self.frame_call(frame, evm)?;
+            println!("Frame call result: {:?} for Frame {:?}", call_or_result, frame);
 
             let result = match call_or_result {
                 ItemOrResult::Item(init) => {
@@ -381,6 +382,7 @@ pub trait Handler {
                     result
                 }
             };
+            println!("Frame result: {:?}", result);
 
             let Some(frame) = frame_stack.last_mut() else {
                 return Ok(result);
