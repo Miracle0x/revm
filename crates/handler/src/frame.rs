@@ -104,6 +104,8 @@ where
     }
 
     fn run(&mut self, context: &mut Self::Evm) -> Result<FrameInitOrResult<Self>, Self::Error> {
+        println!("Frame input: {:?}", self.input);
+        println!("Running frame: {:?}", self.data);
         let next_action = context.run_interpreter(&mut self.interpreter);
         self.process_next_action(context, next_action)
     }
