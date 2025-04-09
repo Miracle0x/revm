@@ -36,6 +36,7 @@ pub fn validate_tx_against_state<
     // Load acc
     let account = context.journal().load_account_code(tx_caller)?;
     let account = account.data.info.clone();
+    println!("tx_caller {:?} for accout {:?} for block {:?}", tx_caller, account, context.block().number());
 
     validate_tx_against_account(&account, context, U256::ZERO)?;
     Ok(())
@@ -270,16 +271,12 @@ pub fn validate_tx_against_account<CTX: ContextTr>(
         .and_then(|gas_cost| gas_cost.checked_add(additional_cost))
         .ok_or(InvalidTransaction::OverflowPaymentInTransaction)?;
     
-    println!("balance_check: {:?} for block {:?}", balance_check, context.block().number());
-
     if tx_type == TransactionType::Eip4844 {
         let data_fee = tx.calc_max_data_fee();
         balance_check = balance_check
             .checked_add(data_fee)
             .ok_or(InvalidTransaction::OverflowPaymentInTransaction)?;
     }
-
-    println!("balance_check: {:?} with account balance {:?} for block {:?}", balance_check, account.balance, context.block().number());
 
     // Check if account has enough balance for `gas_limit * max_fee`` and value transfer.
     // Transfer will be done inside `*_inner` functions.
