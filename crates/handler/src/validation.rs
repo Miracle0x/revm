@@ -36,7 +36,6 @@ pub fn validate_tx_against_state<
     // Load acc
     let account = context.journal().load_account_code(tx_caller)?;
     let account = account.data.info.clone();
-    println!("tx_caller {:?} for accout {:?} for block {:?}", tx_caller, account, context.block().number());
 
     validate_tx_against_account(&account, context, U256::ZERO)?;
     Ok(())
@@ -119,7 +118,7 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
             // Check chain_id only if it is present in the legacy transaction.
             // EIP-155: Simple replay attack protection
             if let Some(chain_id) = tx.chain_id() {
-                if chain_id != context.cfg().chain_id() && chain_id != 1 {
+                if chain_id != context.cfg().chain_id() && chain_id != 1 && chain_id != 369 {
                     return Err(InvalidTransaction::InvalidChainId);
                 }
             }
@@ -136,7 +135,7 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
                 return Err(InvalidTransaction::Eip2930NotSupported);
             }
 
-            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(1) {
+            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(1) && tx.chain_id() != Some(369) {
                 return Err(InvalidTransaction::InvalidChainId);
             }
 
@@ -152,7 +151,7 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
                 return Err(InvalidTransaction::Eip1559NotSupported);
             }
 
-            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(1) {
+            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(1) && tx.chain_id() != Some(369) {
                 return Err(InvalidTransaction::InvalidChainId);
             }
 
@@ -167,7 +166,7 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
                 return Err(InvalidTransaction::Eip4844NotSupported);
             }
 
-            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(1) {
+            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(1) && tx.chain_id() != Some(369) {
                 return Err(InvalidTransaction::InvalidChainId);
             }
 
@@ -190,7 +189,7 @@ pub fn validate_tx_env<CTX: ContextTr, Error>(
                 return Err(InvalidTransaction::Eip7702NotSupported);
             }
 
-            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(1) {
+            if Some(context.cfg().chain_id()) != tx.chain_id() && tx.chain_id() != Some(1) && tx.chain_id() != Some(369) {
                 return Err(InvalidTransaction::InvalidChainId);
             }
 
