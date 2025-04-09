@@ -279,7 +279,7 @@ pub fn validate_tx_against_account<CTX: ContextTr>(
             .ok_or(InvalidTransaction::OverflowPaymentInTransaction)?;
     }
 
-    println!("balance_check: {:?} for block {:?}", balance_check, context.block().number());
+    println!("balance_check: {:?} with account balance {:?} for block {:?}", balance_check, account.balance, context.block().number());
 
     // Check if account has enough balance for `gas_limit * max_fee`` and value transfer.
     // Transfer will be done inside `*_inner` functions.
