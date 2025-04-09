@@ -113,7 +113,6 @@ pub trait Handler {
     fn validate(&self, evm: &mut Self::Evm) -> Result<InitialAndFloorGas, Self::Error> {
         self.validate_env(evm)?;
         let initial_and_floor_gas = self.validate_initial_tx_gas(evm)?;
-        println!("Initial gas: {:?} for block {:?}", initial_and_floor_gas.initial_gas, evm.ctx().block().number());
         self.validate_tx_against_state(evm)?;
         Ok(initial_and_floor_gas)
     }
