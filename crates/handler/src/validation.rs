@@ -269,6 +269,8 @@ pub fn validate_tx_against_account<CTX: ContextTr>(
         .and_then(|gas_cost| gas_cost.checked_add(tx.value()))
         .and_then(|gas_cost| gas_cost.checked_add(additional_cost))
         .ok_or(InvalidTransaction::OverflowPaymentInTransaction)?;
+    
+    println!("balance_check: {:?} for block {:?}", balance_check, context.block().number());
 
     if tx_type == TransactionType::Eip4844 {
         let data_fee = tx.calc_max_data_fee();
@@ -277,7 +279,7 @@ pub fn validate_tx_against_account<CTX: ContextTr>(
             .ok_or(InvalidTransaction::OverflowPaymentInTransaction)?;
     }
 
-    println!("balance_check: {:?} for block {:?}", context.cfg().is_balance_check_disabled(), context.block().number());
+    println!("balance_check: {:?} for block {:?}", balance_check, context.block().number());
 
     // Check if account has enough balance for `gas_limit * max_fee`` and value transfer.
     // Transfer will be done inside `*_inner` functions.
