@@ -3,6 +3,7 @@ use crate::{
     execution, post_execution, pre_execution, validation, Frame, FrameInitOrResult, FrameOrResult,
     FrameResult, ItemOrResult,
 };
+use context::Block;
 use context::result::FromStringError;
 use context::JournalOutput;
 use context_interface::context::ContextError;
