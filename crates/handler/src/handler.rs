@@ -100,9 +100,9 @@ pub trait Handler {
         let init_and_floor_gas = self.validate(evm)?;
         let eip7702_refund = self.pre_execution(evm)? as i64;
         let exec_result = self.execution(evm, &init_and_floor_gas)?;
-        if evm.ctx().block().number() == 17253037 {
-            println!("Running handler... {:?} chain id {} block number {:?} tx caller {:?} nonce {:?} gas price {:?}\n Execution result: {:?}", evm.ctx().cfg().spec().into(), evm.ctx().cfg().chain_id(), evm.ctx().block().number(), evm.ctx().tx().caller(), evm.ctx().tx().nonce(), evm.ctx().tx().gas_price(), exec_result);
-        }
+        // if evm.ctx().block().number() == 17253037 {
+        println!("Running handler... {:?} chain id {} block number {:?} tx caller {:?} nonce {:?} gas price {:?}\n Execution result: {:?}", evm.ctx().cfg().spec().into(), evm.ctx().cfg().chain_id(), evm.ctx().block().number(), evm.ctx().tx().caller(), evm.ctx().tx().nonce(), evm.ctx().tx().gas_price(), exec_result);
+        // }
         self.post_execution(evm, exec_result, init_and_floor_gas, eip7702_refund)
     }
 
