@@ -355,21 +355,25 @@ pub trait Handler {
         loop {
             let frame = frame_stack.last_mut().unwrap();
             let call_or_result = self.frame_call(frame, evm)?;
-            println!("Frame call or result: {:?} for block {:?}", call_or_result, evm.ctx().block().number());
+            if evm.ctx().block().number() == 17253037 as u64 {
+                println!("Frame call or result: {:?} for block {:?} for tx caller {:?} tx nonece {} tx input {}", call_or_result, evm.ctx().block().number(), evm.ctx().tx().caller(), evm.ctx().tx().nonce(), evm.ctx().tx().input());
+            }
 
             let result = match call_or_result {
                 ItemOrResult::Item(init) => {
                     match self.frame_init(frame, evm, init)? {
                         ItemOrResult::Item(new_frame) => {
                             if evm.ctx().block().number() == 17253037 as u64 {
-                                println!("new frame pushed");
+                                println!("new frame pushed for tx caller {}", evm.ctx().tx().caller());
                             }
                             frame_stack.push(new_frame);
                             continue;
                         }                        
                         // Do not pop the frame since no new frame was created
                         ItemOrResult::Result(result) => {
-                            println!("Frame init result: {:?} for block {:?}", result, evm.ctx().block().number());
+                            if evm.ctx().block().number() == 17253037 {
+                                println!("Frame init result: {:?} for tx caller {}", result, evm.ctx().tx().caller());
+                            }
                             result
                         },
                     }
@@ -377,7 +381,9 @@ pub trait Handler {
                 ItemOrResult::Result(result) => {
                     // Remove the frame that returned the result
                     frame_stack.pop();
-                    println!("Frame result: {:?}", result);
+                    if evm.ctx().block().number() == 17253037 {
+                        println!("Frame result: {:?}", result);
+                    }
                     result
                 }
             };
