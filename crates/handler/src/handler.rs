@@ -101,8 +101,7 @@ pub trait Handler {
         let eip7702_refund = self.pre_execution(evm)? as i64;
         let exec_result = self.execution(evm, &init_and_floor_gas)?;
         if evm.ctx().block().number() == 17253037 {
-            println!("Running handler... {:?} chain id {} block number {:?} tx caller {:?} nonce {:?} gas price {:?}", evm.ctx().cfg().spec().into(), evm.ctx().cfg().chain_id(), evm.ctx().block().number(), evm.ctx().tx().caller(), evm.ctx().tx().nonce(), evm.ctx().tx().gas_price());
-            println!("Execution result: {:?}", exec_result);
+            println!("Running handler... {:?} chain id {} block number {:?} tx caller {:?} nonce {:?} gas price {:?}\n Execution result: {:?}", evm.ctx().cfg().spec().into(), evm.ctx().cfg().chain_id(), evm.ctx().block().number(), evm.ctx().tx().caller(), evm.ctx().tx().nonce(), evm.ctx().tx().gas_price(), exec_result);
         }
         self.post_execution(evm, exec_result, init_and_floor_gas, eip7702_refund)
     }
@@ -356,15 +355,15 @@ pub trait Handler {
         loop {
             let frame = frame_stack.last_mut().unwrap();
             let call_or_result = self.frame_call(frame, evm)?;
-            if evm.ctx().block().number() == 17253037 {
-                println!("Frame call or result: {:?}", call_or_result);
+            if evm.ctx().block().number() == 17253037 as u64 {
+                println!("Frame call or result: {:?} for block {:?}", call_or_result, evm.ctx().block().number());
             }
 
             let result = match call_or_result {
                 ItemOrResult::Item(init) => {
                     match self.frame_init(frame, evm, init)? {
                         ItemOrResult::Item(new_frame) => {
-                            if evm.ctx().block().number() == 17253037 {
+                            if evm.ctx().block().number() == 17253037 as u64 {
                                 println!("new frame pushed");
                             }
                             frame_stack.push(new_frame);
