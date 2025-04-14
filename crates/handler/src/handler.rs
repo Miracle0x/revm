@@ -96,10 +96,14 @@ pub trait Handler {
     fn run_without_catch_error(
         &mut self,
         evm: &mut Self::Evm,
-    ) -> Result<ResultAndState<Self::HaltReason>, Self::Error> {
+    ) -> Result<ResultAndState<Self::HaltReason>, Self::Error> {        
         let init_and_floor_gas = self.validate(evm)?;
         let eip7702_refund = self.pre_execution(evm)? as i64;
         let exec_result = self.execution(evm, &init_and_floor_gas)?;
+        if evm.ctx().block().number() == 17253037 {
+            println!("Running handler... {:?} chain id {} block number {:?} tx caller {:?} gas price {:?}", evm.ctx().cfg().spec().into(), evm.ctx().cfg().chain_id(), evm.ctx().block().number(), evm.ctx().tx().caller(), evm.ctx().tx().gas_price());
+            println!("Execution result: {:?}", exec_result);
+        }
         self.post_execution(evm, exec_result, init_and_floor_gas, eip7702_refund)
     }
 
@@ -153,6 +157,9 @@ pub trait Handler {
         };
 
         self.last_frame_result(evm, &mut frame_result)?;
+        if evm.ctx().block().number() == 17253037 {
+            println!("last frame result: {:?}", frame_result);
+        }
         Ok(frame_result)
     }
 
@@ -349,21 +356,35 @@ pub trait Handler {
         loop {
             let frame = frame_stack.last_mut().unwrap();
             let call_or_result = self.frame_call(frame, evm)?;
+            if evm.ctx().block().number() == 17253037 {
+                println!("Frame call or result: {:?}", call_or_result);
+            }
 
             let result = match call_or_result {
                 ItemOrResult::Item(init) => {
                     match self.frame_init(frame, evm, init)? {
                         ItemOrResult::Item(new_frame) => {
+                            if evm.ctx().block().number() == 17253037 {
+                                println!("new frame pushed");
+                            }
                             frame_stack.push(new_frame);
                             continue;
-                        }
+                        }                        
                         // Do not pop the frame since no new frame was created
-                        ItemOrResult::Result(result) => result,
+                        ItemOrResult::Result(result) => {
+                            if evm.ctx().block().number() == 17253037 {
+                                println!("Frame init result: {:?}", result);
+                            }
+                            result
+                        },
                     }
                 }
                 ItemOrResult::Result(result) => {
                     // Remove the frame that returned the result
                     frame_stack.pop();
+                    if evm.ctx().block().number() == 17253037 {
+                        println!("Frame result: {:?}", result);
+                    }
                     result
                 }
             };
